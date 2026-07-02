@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-
+import '../screens/cart/cart_screen.dart';
+import '../screens/wishlist/wishlist_screen.dart';
 import '../core/constants/app_colors.dart';
 import '../screens/home/home_screen.dart';
-
+import '../screens/profile/profile_screen.dart';
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
 
@@ -16,12 +17,14 @@ class _BottomNavBarState extends State<BottomNavBar> {
   int currentIndex = 0;
 
   final List<Widget> screens = [
-    const HomeScreen(),
-    const Center(child: Text("Wishlist")),
-    const Center(child: Text("Cart")),
-    const Center(child: Text("Orders")),
-    const Center(child: Text("Profile")),
-  ];
+  const HomeScreen(),
+  const WishlistScreen(),
+  const CartScreen(),
+  // const Center(child: Text("Orders")),
+  const CartScreen(),
+  // const Center(child: Text("Profile")),
+  const ProfileScreen(),
+];
 
   @override
   Widget build(BuildContext context) {

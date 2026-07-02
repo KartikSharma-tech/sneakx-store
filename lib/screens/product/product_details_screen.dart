@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:provider/provider.dart';
 
+import '../../models/cart_model.dart';
+import '../../providers/cart_provider.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 
@@ -170,51 +173,51 @@ class _ProductDetailsScreenState
                     const SizedBox(height: 18),
 
                     // SIZE LIST
-                    Row(
-                      children: sizes.map((size) {
+Wrap(
+  spacing: 14,
+  runSpacing: 14,
 
-                        final bool isSelected =
-                            selectedSize == size;
+  children: sizes.map((size) {
 
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedSize = size;
-                            });
-                          },
+    final bool isSelected =
+        selectedSize == size;
 
-                          child: Container(
-                            margin:
-                                const EdgeInsets.only(right: 14),
+    return GestureDetector(
+      onTap: () {
 
-                            width: 55,
-                            height: 55,
+        setState(() {
+          selectedSize = size;
+        });
+      },
 
-                            decoration: BoxDecoration(
-                              color: isSelected
-                                  ? AppColors.primary
-                                  : AppColors.cardColor,
+      child: Container(
+        width: 55,
+        height: 55,
 
-                              borderRadius:
-                                  BorderRadius.circular(18),
-                            ),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? AppColors.primary
+              : AppColors.cardColor,
 
-                            child: Center(
-                              child: Text(
-                                size.toString(),
+          borderRadius:
+              BorderRadius.circular(18),
+        ),
 
-                                style:
-                                    AppTextStyles.subHeading
-                                        .copyWith(
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
+        child: Center(
+          child: Text(
+            size.toString(),
 
+            style:
+                AppTextStyles.subHeading
+                    .copyWith(
+              fontSize: 18,
+            ),
+          ),
+        ),
+      ),
+    );
+  }).toList(),
+),
                     const SizedBox(height: 30),
 
                     // DESCRIPTION
@@ -276,7 +279,30 @@ class _ProductDetailsScreenState
                                 ),
                               ),
 
-                              onPressed: () {},
+                              onPressed: () {
+
+  Provider.of<CartProvider>(
+    context,
+    listen: false,
+  ).addToCart(
+
+    CartModel(
+      name: "Nike Air Max 270",
+
+      image:
+          "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+
+      price: "\$240",
+    ),
+  );
+
+  ScaffoldMessenger.of(context).showSnackBar(
+
+    const SnackBar(
+      content: Text("Added to cart"),
+    ),
+  );
+},
 
                               child: Text(
                                 "Buy Now",

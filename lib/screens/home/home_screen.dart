@@ -3,40 +3,60 @@ import 'package:iconsax/iconsax.dart';
 import '../product/product_details_screen.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
+class _HomeScreenState extends State<HomeScreen> {
+  final List<String> categories = ["All", "Nike", "Adidas", "Puma", "Jordan"];
+
+  String selectedCategory = "All";
+
+  final TextEditingController searchController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
     final List<Map<String, dynamic>> products = [
       {
         "name": "Nike Air Max",
         "price": "\$240",
-        "image":
-            "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+        "image": "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+        "category": "Nike",
       },
       {
         "name": "Adidas Ultraboost",
         "price": "\$180",
-        "image":
-            "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519",
+        "image": "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519",
+        "category": "Jordan",
       },
       {
         "name": "Puma RS-X",
         "price": "\$150",
-        "image":
-            "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77",
+        "image": "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77",
+        "category": "Adidas",
       },
       {
         "name": "Jordan Retro",
         "price": "\$320",
-        "image":
-            "https://images.unsplash.com/photo-1514996937319-344454492b37",
+        "image": "https://images.unsplash.com/photo-1514996937319-344454492b37",
+        "category": "Puma",
       },
     ];
+    final filteredProducts = products.where((product) {
+      final matchesCategory =
+          selectedCategory == "All" || product["category"] == selectedCategory;
 
+      final matchesSearch = product["name"].toLowerCase().contains(
+        searchController.text.toLowerCase(),
+      );
+
+      return matchesCategory && matchesSearch;
+    }).toList();
     return Scaffold(
       backgroundColor: AppColors.background,
 
@@ -48,22 +68,16 @@ class HomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
 
             children: [
-
               // TOP BAR
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                 children: [
-
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
 
                     children: [
-
-                      Text(
-                        "Hello Kartik 👋",
-                        style: AppTextStyles.body,
-                      ),
+                      Text("Hello Kartik 👋", style: AppTextStyles.body),
 
                       const SizedBox(height: 6),
 
@@ -94,9 +108,7 @@ class HomeScreen extends StatelessWidget {
 
               // SEARCH BAR
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 18,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 18),
 
                 height: 58,
 
@@ -107,18 +119,11 @@ class HomeScreen extends StatelessWidget {
 
                 child: Row(
                   children: [
-
-                    const Icon(
-                      Iconsax.search_normal,
-                      color: Colors.grey,
-                    ),
+                    const Icon(Iconsax.search_normal, color: Colors.grey),
 
                     const SizedBox(width: 12),
 
-                    Text(
-                      "Search sneakers...",
-                      style: AppTextStyles.body,
-                    ),
+                    Text("Search sneakers...", style: AppTextStyles.body),
                   ],
                 ),
               ),
@@ -149,8 +154,8 @@ class HomeScreen extends StatelessWidget {
 
                     gradient: LinearGradient(
                       colors: [
-                        Colors.black.withOpacity(0.2),
-                        Colors.black.withOpacity(0.85),
+                        Colors.black.withValues(alpha: 0.2),
+                        Colors.black.withValues(alpha: 0.85),
                       ],
 
                       begin: Alignment.topCenter,
@@ -163,11 +168,7 @@ class HomeScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
 
                     children: [
-
-                      Text(
-                        "New Collection",
-                        style: AppTextStyles.heading,
-                      ),
+                      Text("New Collection", style: AppTextStyles.heading),
 
                       const SizedBox(height: 10),
 
@@ -181,7 +182,87 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: 24),
 
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 18),
+
+                decoration: BoxDecoration(
+                  color: AppColors.cardColor,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+
+                child: TextField(
+                  controller: searchController,
+
+                  style: const TextStyle(color: Colors.white),
+
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+
+                    hintText: "Search sneakers...",
+
+                    hintStyle: TextStyle(color: Colors.grey),
+
+                    icon: Icon(Icons.search, color: Colors.grey),
+                  ),
+
+                  onChanged: (value) {
+                    setState(() {});
+                  },
+                ),
+              ),
+
+              const SizedBox(height: 24),
+              SizedBox(
+                height: 45,
+
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+
+                  itemCount: categories.length,
+
+                  itemBuilder: (context, index) {
+                    final category = categories[index];
+
+                    final bool isSelected = selectedCategory == category;
+
+                    return GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          selectedCategory = category;
+                        });
+                      },
+
+                      child: Container(
+                        margin: const EdgeInsets.only(right: 14),
+
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+
+                        decoration: BoxDecoration(
+                          color: isSelected
+                              ? AppColors.primary
+                              : AppColors.cardColor,
+
+                          borderRadius: BorderRadius.circular(16),
+                        ),
+
+                        alignment: Alignment.center,
+
+                        child: Text(
+                          category,
+
+                          style: AppTextStyles.body.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+              const SizedBox(height: 28),
               const SizedBox(height: 30),
 
               // CATEGORY TITLE
@@ -189,11 +270,7 @@ class HomeScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                 children: [
-
-                  Text(
-                    "Categories",
-                    style: AppTextStyles.subHeading,
-                  ),
+                  Text("Categories", style: AppTextStyles.subHeading),
 
                   Text(
                     "See All",
@@ -212,7 +289,6 @@ class HomeScreen extends StatelessWidget {
 
                 child: Row(
                   children: [
-
                     buildCategory("Sneakers"),
                     buildCategory("Hoodies"),
                     buildCategory("Jackets"),
@@ -224,23 +300,19 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(height: 30),
 
               // FEATURED TITLE
-              Text(
-                "Featured Products",
-                style: AppTextStyles.subHeading,
-              ),
+              Text("Featured Products", style: AppTextStyles.subHeading),
 
               const SizedBox(height: 20),
 
               // PRODUCT GRID
               GridView.builder(
-                itemCount: products.length,
+                itemCount: filteredProducts.length,
 
                 shrinkWrap: true,
 
                 physics: const NeverScrollableScrollPhysics(),
 
-                gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
 
                   mainAxisSpacing: 18,
@@ -250,108 +322,98 @@ class HomeScreen extends StatelessWidget {
                 ),
 
                 itemBuilder: (context, index) {
+                  final product = filteredProducts[index];
 
-                  final product = products[index];
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ProductDetailsScreen(),
+                        ),
+                      );
+                    },
 
-                 return GestureDetector(
-  onTap: () {
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: AppColors.cardColor,
+                        borderRadius: BorderRadius.circular(24),
+                      ),
 
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) =>
-            const ProductDetailsScreen(),
-      ),
-    );
-  },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
 
-  child: Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.cardColor,
-                      borderRadius: BorderRadius.circular(24),
-                    ),
-
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-
-                      children: [
-
-                        Expanded(
-                          child: Stack(
-                            children: [
-
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.vertical(
-                                    top: Radius.circular(24),
-                                  ),
-
-                                  image: DecorationImage(
-                                    image: NetworkImage(
-                                      product["image"],
+                        children: [
+                          Expanded(
+                            child: Stack(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: const BorderRadius.vertical(
+                                      top: Radius.circular(24),
                                     ),
 
-                                    fit: BoxFit.cover,
+                                    image: DecorationImage(
+                                      image: NetworkImage(product["image"]),
+
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
-                              ),
 
-                              Positioned(
-                                right: 12,
-                                top: 12,
+                                Positioned(
+                                  right: 12,
+                                  top: 12,
 
-                                child: Container(
-                                  padding: const EdgeInsets.all(8),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8),
 
-                                  decoration: BoxDecoration(
-                                    color: Colors.black45,
-                                    borderRadius:
-                                        BorderRadius.circular(14),
-                                  ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.black45,
+                                      borderRadius: BorderRadius.circular(14),
+                                    ),
 
-                                  child: const Icon(
-                                    Iconsax.heart,
-                                    color: Colors.white,
-                                    size: 18,
+                                    child: const Icon(
+                                      Iconsax.heart,
+                                      color: Colors.white,
+                                      size: 18,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
 
-                        Padding(
-                          padding: const EdgeInsets.all(14),
+                          Padding(
+                            padding: const EdgeInsets.all(14),
 
-                          child: Column(
-                            crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
 
-                            children: [
-
-                              Text(
-                                product["name"],
-                                style: AppTextStyles.subHeading.copyWith(
-                                  fontSize: 16,
+                              children: [
+                                Text(
+                                  product["name"],
+                                  style: AppTextStyles.subHeading.copyWith(
+                                    fontSize: 16,
+                                  ),
                                 ),
-                              ),
 
-                              const SizedBox(height: 8),
+                                const SizedBox(height: 8),
 
-                              Text(
-                                product["price"],
-                                style: AppTextStyles.body.copyWith(
-                                  color: AppColors.primary,
-                                  fontWeight: FontWeight.bold,
+                                Text(
+                                  product["price"],
+                                  style: AppTextStyles.body.copyWith(
+                                    color: AppColors.primary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                 );
+                  );
                 },
               ),
             ],
@@ -365,10 +427,7 @@ class HomeScreen extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(right: 14),
 
-      padding: const EdgeInsets.symmetric(
-        horizontal: 22,
-        vertical: 14,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14),
 
       decoration: BoxDecoration(
         color: AppColors.cardColor,
@@ -377,9 +436,7 @@ class HomeScreen extends StatelessWidget {
 
       child: Text(
         title,
-        style: AppTextStyles.body.copyWith(
-          color: Colors.white,
-        ),
+        style: AppTextStyles.body.copyWith(color: Colors.white),
       ),
     );
   }
