@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-
+import '../product/product_details_screen.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 
@@ -253,7 +253,19 @@ class HomeScreen extends StatelessWidget {
 
                   final product = products[index];
 
-                  return Container(
+                 return GestureDetector(
+  onTap: () {
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            const ProductDetailsScreen(),
+      ),
+    );
+  },
+
+  child: Container(
                     decoration: BoxDecoration(
                       color: AppColors.cardColor,
                       borderRadius: BorderRadius.circular(24),
@@ -338,7 +350,8 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                  );
+                  ),
+                 );
                 },
               ),
             ],
