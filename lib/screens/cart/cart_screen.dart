@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
-
+import '../orders/checkout_screen.dart';
 import '../../providers/cart_provider.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
@@ -78,7 +78,7 @@ class CartScreen extends StatelessWidget {
                               const SizedBox(height: 8),
 
                               Text(
-                                "${cartItem.price}",
+                                cartItem.price,
                                 style: AppTextStyles.body.copyWith(
                                   color: AppColors.primary,
                                   fontWeight: FontWeight.bold,
@@ -231,7 +231,15 @@ class CartScreen extends StatelessWidget {
                         ),
                       ),
 
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+
+                          MaterialPageRoute(
+                            builder: (context) => const CheckoutScreen(),
+                          ),
+                        );
+                      },
 
                       child: Text("Checkout", style: AppTextStyles.button),
                     ),

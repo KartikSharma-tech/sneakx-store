@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import '../../models/order_model.dart';
+import '../../providers/order_provider.dart';
 import '../../providers/cart_provider.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
@@ -14,6 +15,11 @@ class CheckoutScreen extends StatelessWidget {
 final cartProvider =
     Provider.of<CartProvider>(
   context,
+);
+final orderProvider =
+    Provider.of<OrderProvider>(
+  context,
+  listen: false,
 );
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -187,6 +193,36 @@ final cartProvider =
     return;
   }
 
+  for (var item in cartProvider.cartItems) {
+
+    Provider.of<OrderProvider>(
+      context,
+      listen: false,
+    ).addOrder(
+
+      OrderModel(
+
+        orderId:
+            DateTime.now()
+                .millisecondsSinceEpoch
+                .toString(),
+
+        productName: item.name,
+
+        productImage: item.image,
+
+        price: item.price,
+
+        date:
+            "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
+
+        status: "Delivered",
+      ),
+    );
+  }
+
+  cartProvider.clearCart();
+
   Navigator.push(
 
     context,
@@ -197,7 +233,6 @@ final cartProvider =
     ),
   );
 },
-
                 child: Text(
                   "Place Order",
                   style:

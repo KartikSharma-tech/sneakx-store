@@ -71,4 +71,10 @@ void decreaseQuantity(int index) {
 
   notifyListeners();
 }
+void clearCart() {
+
+  cartItems.clear();
+
+  notifyListeners();
+}
 }

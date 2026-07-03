@@ -11,13 +11,10 @@ class ProductDetailsScreen extends StatefulWidget {
   const ProductDetailsScreen({super.key});
 
   @override
-  State<ProductDetailsScreen> createState() =>
-      _ProductDetailsScreenState();
+  State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
 }
 
-class _ProductDetailsScreenState
-    extends State<ProductDetailsScreen> {
-
+class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   int selectedSize = 8;
 
   final List<int> sizes = [6, 7, 8, 9, 10];
@@ -33,11 +30,9 @@ class _ProductDetailsScreenState
             crossAxisAlignment: CrossAxisAlignment.start,
 
             children: [
-
               // TOP IMAGE
               Stack(
                 children: [
-
                   Container(
                     height: 420,
                     width: double.infinity,
@@ -67,8 +62,7 @@ class _ProductDetailsScreenState
 
                         decoration: BoxDecoration(
                           color: Colors.black45,
-                          borderRadius:
-                              BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(16),
                         ),
 
                         child: const Icon(
@@ -89,8 +83,7 @@ class _ProductDetailsScreenState
 
                       decoration: BoxDecoration(
                         color: Colors.black45,
-                        borderRadius:
-                            BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(16),
                       ),
 
                       child: const Icon(
@@ -110,28 +103,21 @@ class _ProductDetailsScreenState
                   crossAxisAlignment: CrossAxisAlignment.start,
 
                   children: [
-
                     // NAME + PRICE
                     Row(
-                      mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                       children: [
-
                         Expanded(
                           child: Text(
                             "Nike Air Max 270",
-                            style:
-                                AppTextStyles.heading.copyWith(
-                              fontSize: 28,
-                            ),
+                            style: AppTextStyles.heading.copyWith(fontSize: 28),
                           ),
                         ),
 
                         Text(
                           "\$240",
-                          style:
-                              AppTextStyles.subHeading.copyWith(
+                          style: AppTextStyles.subHeading.copyWith(
                             color: AppColors.primary,
                             fontSize: 24,
                           ),
@@ -144,12 +130,7 @@ class _ProductDetailsScreenState
                     // RATING
                     Row(
                       children: [
-
-                        const Icon(
-                          Icons.star,
-                          color: Colors.orange,
-                          size: 22,
-                        ),
+                        const Icon(Icons.star, color: Colors.orange, size: 22),
 
                         const SizedBox(width: 8),
 
@@ -165,66 +146,54 @@ class _ProductDetailsScreenState
                     const SizedBox(height: 30),
 
                     // SIZE TITLE
-                    Text(
-                      "Select Size",
-                      style: AppTextStyles.subHeading,
-                    ),
+                    Text("Select Size", style: AppTextStyles.subHeading),
 
                     const SizedBox(height: 18),
 
                     // SIZE LIST
-Wrap(
-  spacing: 14,
-  runSpacing: 14,
+                    Wrap(
+                      spacing: 14,
+                      runSpacing: 14,
 
-  children: sizes.map((size) {
+                      children: sizes.map((size) {
+                        final bool isSelected = selectedSize == size;
 
-    final bool isSelected =
-        selectedSize == size;
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              selectedSize = size;
+                            });
+                          },
 
-    return GestureDetector(
-      onTap: () {
+                          child: Container(
+                            width: 55,
+                            height: 55,
 
-        setState(() {
-          selectedSize = size;
-        });
-      },
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? AppColors.primary
+                                  : AppColors.cardColor,
 
-      child: Container(
-        width: 55,
-        height: 55,
+                              borderRadius: BorderRadius.circular(18),
+                            ),
 
-        decoration: BoxDecoration(
-          color: isSelected
-              ? AppColors.primary
-              : AppColors.cardColor,
+                            child: Center(
+                              child: Text(
+                                size.toString(),
 
-          borderRadius:
-              BorderRadius.circular(18),
-        ),
-
-        child: Center(
-          child: Text(
-            size.toString(),
-
-            style:
-                AppTextStyles.subHeading
-                    .copyWith(
-              fontSize: 18,
-            ),
-          ),
-        ),
-      ),
-    );
-  }).toList(),
-),
+                                style: AppTextStyles.subHeading.copyWith(
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
                     const SizedBox(height: 30),
 
                     // DESCRIPTION
-                    Text(
-                      "Description",
-                      style: AppTextStyles.subHeading,
-                    ),
+                    Text("Description", style: AppTextStyles.subHeading),
 
                     const SizedBox(height: 14),
 
@@ -241,15 +210,13 @@ Wrap(
                     // BUTTONS
                     Row(
                       children: [
-
                         Container(
                           width: 60,
                           height: 60,
 
                           decoration: BoxDecoration(
                             color: AppColors.cardColor,
-                            borderRadius:
-                                BorderRadius.circular(18),
+                            borderRadius: BorderRadius.circular(18),
                           ),
 
                           child: const Icon(
@@ -265,49 +232,39 @@ Wrap(
                             height: 60,
 
                             child: ElevatedButton(
-                              style:
-                                  ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    AppColors.primary,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: AppColors.primary,
 
-                                shape:
-                                    RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(
-                                    18,
-                                  ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18),
                                 ),
                               ),
 
                               onPressed: () {
+                                Provider.of<CartProvider>(
+                                  context,
+                                  listen: false,
+                                ).addToCart(
+                                  CartModel(
+                                    name: "Nike Air Max 270",
 
-  Provider.of<CartProvider>(
-    context,
-    listen: false,
-  ).addToCart(
+                                    image:
+                                        "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
 
-    CartModel(
-      name: "Nike Air Max 270",
+                                    price: "\$240",
+                                  ),
+                                );
 
-      image:
-          "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
-
-      price: "\$240",
-    ),
-  );
-
-  ScaffoldMessenger.of(context).showSnackBar(
-
-    const SnackBar(
-      content: Text("Added to cart"),
-    ),
-  );
-},
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("Added to cart"),
+                                  ),
+                                );
+                              },
 
                               child: Text(
                                 "Buy Now",
-                                style:
-                                    AppTextStyles.button,
+                                style: AppTextStyles.button,
                               ),
                             ),
                           ),
