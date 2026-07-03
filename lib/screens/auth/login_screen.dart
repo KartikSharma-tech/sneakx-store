@@ -10,28 +10,18 @@ class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() =>
-      _LoginScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState
-    extends State<LoginScreen> {
-
+class _LoginScreenState extends State<LoginScreen> {
   bool isPasswordHidden = true;
 
-  final TextEditingController
-      emailController =
-      TextEditingController();
+  final TextEditingController emailController = TextEditingController();
 
-  final TextEditingController
-      passwordController =
-      TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   @override
-  
-  Widget build
-  
-  (BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
 
@@ -43,49 +33,36 @@ class _LoginScreenState
             crossAxisAlignment: CrossAxisAlignment.start,
 
             children: [
-
               const SizedBox(height: 40),
 
               Text(
                 "Welcome Back 👋",
-                style: AppTextStyles.heading.copyWith(
-                  fontSize: 32,
-                ),
+                style: AppTextStyles.heading.copyWith(fontSize: 32),
               ),
 
               const SizedBox(height: 10),
 
-              Text(
-                "Login to continue shopping",
-                style: AppTextStyles.body,
-              ),
+              Text("Login to continue shopping", style: AppTextStyles.body),
 
               const SizedBox(height: 50),
 
               // EMAIL
               TextField(
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
+                controller: emailController,
+                style: const TextStyle(color: Colors.white),
 
                 decoration: InputDecoration(
                   hintText: "Email Address",
 
-                  hintStyle: const TextStyle(
-                    color: Colors.grey,
-                  ),
+                  hintStyle: const TextStyle(color: Colors.grey),
 
-                  prefixIcon: const Icon(
-                    Iconsax.sms,
-                    color: Colors.grey,
-                  ),
+                  prefixIcon: const Icon(Iconsax.sms, color: Colors.grey),
 
                   filled: true,
                   fillColor: AppColors.cardColor,
 
                   border: OutlineInputBorder(
-                    borderRadius:
-                        BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(18),
 
                     borderSide: BorderSide.none,
                   ),
@@ -96,35 +73,36 @@ class _LoginScreenState
 
               // PASSWORD
               TextField(
-                obscureText: true,
-
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
+                obscureText: isPasswordHidden,
+                controller: passwordController,
+                style: const TextStyle(color: Colors.white),
 
                 decoration: InputDecoration(
                   hintText: "Password",
 
-                  hintStyle: const TextStyle(
-                    color: Colors.grey,
-                  ),
+                  hintStyle: const TextStyle(color: Colors.grey),
 
-                  prefixIcon: const Icon(
-                    Iconsax.lock,
-                    color: Colors.grey,
-                  ),
+                  prefixIcon: const Icon(Iconsax.lock, color: Colors.grey),
 
-                  suffixIcon: const Icon(
-                    Iconsax.eye_slash,
-                    color: Colors.grey,
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        isPasswordHidden = !isPasswordHidden;
+                      });
+                    },
+
+                    icon: Icon(
+                      isPasswordHidden
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                    ),
                   ),
 
                   filled: true,
                   fillColor: AppColors.cardColor,
 
                   border: OutlineInputBorder(
-                    borderRadius:
-                        BorderRadius.circular(18),
+                    borderRadius: BorderRadius.circular(18),
 
                     borderSide: BorderSide.none,
                   ),
@@ -138,9 +116,7 @@ class _LoginScreenState
 
                 child: Text(
                   "Forgot Password?",
-                  style: AppTextStyles.body.copyWith(
-                    color: AppColors.primary,
-                  ),
+                  style: AppTextStyles.body.copyWith(color: AppColors.primary),
                 ),
               ),
 
@@ -153,30 +129,45 @@ class _LoginScreenState
 
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                        AppColors.primary,
+                    backgroundColor: AppColors.primary,
 
                     shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(18),
+                      borderRadius: BorderRadius.circular(18),
                     ),
                   ),
 
-                  onPressed: () {
+                 onPressed: () {
 
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            const BottomNavBar(),
-                      ),
-                    );
-                  },
+  if (emailController.text.isEmpty ||
+      passwordController.text.isEmpty) {
 
-                  child: Text(
-                    "Login",
-                    style: AppTextStyles.button,
-                  ),
+    ScaffoldMessenger.of(context)
+        .showSnackBar(
+
+      const SnackBar(
+        content: Text(
+          "Please fill email and password",
+        ),
+      ),
+    );
+
+    return;
+  }
+
+  Navigator.push(
+
+    context,
+
+    MaterialPageRoute(
+
+      builder: (context) =>
+          const BottomNavBar(),
+
+    ),
+  );
+},
+
+                  child: Text("Login", style: AppTextStyles.button),
                 ),
               ),
 
@@ -185,34 +176,27 @@ class _LoginScreenState
               Center(
                 child: GestureDetector(
                   onTap: () {
-
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) =>
-                            const SignupScreen(),
+                        builder: (context) => const SignupScreen(),
                       ),
                     );
                   },
 
                   child: RichText(
                     text: TextSpan(
-                      text:
-                          "Don't have an account? ",
+                      text: "Don't have an account? ",
 
                       style: AppTextStyles.body,
 
                       children: [
-
                         TextSpan(
                           text: "Sign Up",
 
-                          style:
-                              AppTextStyles.body
-                                  .copyWith(
+                          style: AppTextStyles.body.copyWith(
                             color: AppColors.primary,
-                            fontWeight:
-                                FontWeight.bold,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],

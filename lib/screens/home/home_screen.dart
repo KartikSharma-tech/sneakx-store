@@ -3,7 +3,9 @@ import 'package:iconsax/iconsax.dart';
 import '../product/product_details_screen.dart';
 import '../../core/constants/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:provider/provider.dart';
+import '../../models/wishlist_model.dart';
+import '../../providers/wishlist_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -29,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
         "category": "Nike",
       },
       {
-        "name": "Adidas Ultraboost",
+        "name": "Nike Air Force1",
         "price": "\$180",
         "image": "https://images.unsplash.com/photo-1600185365483-26d7a4cc7519",
         "category": "Jordan",
@@ -373,10 +375,41 @@ class _HomeScreenState extends State<HomeScreen> {
                                       borderRadius: BorderRadius.circular(14),
                                     ),
 
-                                    child: const Icon(
-                                      Iconsax.heart,
-                                      color: Colors.white,
-                                      size: 18,
+                                    child: Consumer<WishlistProvider>(
+                                      builder:
+                                          (context, wishlistProvider, child) {
+                                            final isWishlist = wishlistProvider
+                                                .isInWishlist(product["name"]);
+
+                                            return GestureDetector(
+                                              onTap: () {
+                                                wishlistProvider.toggleWishlist(
+                                                  WishlistModel(
+                                                    name: product["name"],
+
+                                                    price: product["price"],
+
+                                                    image: product["image"],
+
+                                                    category:
+                                                        product["category"],
+                                                  ),
+                                                );
+                                              },
+
+                                              child: Icon(
+                                                isWishlist
+                                                    ? Icons.favorite
+                                                    : Icons.favorite_border,
+
+                                                color: isWishlist
+                                                    ? Colors.red
+                                                    : Colors.white,
+
+                                                size: 18,
+                                              ),
+                                            );
+                                          },
                                     ),
                                   ),
                                 ),

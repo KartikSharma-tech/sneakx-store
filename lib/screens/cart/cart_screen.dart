@@ -43,8 +43,8 @@ class CartScreen extends StatelessWidget {
                     child: Row(
                       children: [
                         Container(
-                          width: 90,
-                          height: 90,
+                          width: 75,
+                          height: 75,
 
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(18),
@@ -59,22 +59,26 @@ class CartScreen extends StatelessWidget {
                           ),
                         ),
 
-                        const SizedBox(width: 16),
+                        const SizedBox(width: 10),
 
-                        Expanded(
+                        Flexible(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
 
                             children: [
                               Text(
-                                "cartItem.name",
+                                cartItem.name,
+
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+
                                 style: AppTextStyles.subHeading,
                               ),
 
                               const SizedBox(height: 8),
 
                               Text(
-                                "cartItem.price",
+                                "${cartItem.price}",
                                 style: AppTextStyles.body.copyWith(
                                   color: AppColors.primary,
                                   fontWeight: FontWeight.bold,
@@ -100,30 +104,79 @@ class CartScreen extends StatelessWidget {
                                     ),
                                   ),
 
-                                  const SizedBox(width: 14),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Provider.of<CartProvider>(
+                                        context,
+                                        listen: false,
+                                      ).decreaseQuantity(index);
+                                    },
+
+                                    child: Container(
+                                      padding: const EdgeInsets.all(6),
+
+                                      decoration: BoxDecoration(
+                                        color: Colors.black26,
+
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+
+                                      child: const Icon(Icons.remove, size: 18),
+                                    ),
+                                  ),
+
+                                  const SizedBox(width: 12),
 
                                   Text(
-                                    "cartItem.quantity.toString()",
-                                    style: AppTextStyles.subHeading,
-                                  ),
+                                    "${cartItem.quantity}",
 
-                                  const SizedBox(width: 14),
-
-                                  Container(
-                                    padding: const EdgeInsets.all(6),
-
-                                    decoration: BoxDecoration(
-                                      color: AppColors.primary,
-
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-
-                                    child: const Icon(
-                                      Icons.add,
-                                      color: Colors.white,
-                                      size: 18,
+                                    style: AppTextStyles.subHeading.copyWith(
+                                      fontSize: 16,
                                     ),
                                   ),
+
+                                  const SizedBox(width: 12),
+
+                                  GestureDetector(
+                                    onTap: () {
+                                      Provider.of<CartProvider>(
+                                        context,
+                                        listen: false,
+                                      ).increaseQuantity(index);
+                                    },
+
+                                    child: Container(
+                                      padding: const EdgeInsets.all(6),
+
+                                      decoration: BoxDecoration(
+                                        color: AppColors.primary,
+
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+
+                                      child: const Icon(
+                                        Icons.add,
+                                        size: 18,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+
+                                  // Container(
+                                  //   padding: const EdgeInsets.all(6),
+
+                                  //   decoration: BoxDecoration(
+                                  //     color: AppColors.primary,
+
+                                  //     borderRadius: BorderRadius.circular(10),
+                                  //   ),
+
+                                  //   child: const Icon(
+                                  //     Icons.add,
+                                  //     color: Colors.white,
+                                  //     size: 18,
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             ],

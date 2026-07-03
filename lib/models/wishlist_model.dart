@@ -1,17 +1,14 @@
-class CartModel {
+class WishlistModel {
 
   final String name;
   final String price;
   final String image;
+  final String category;
 
-  int quantity;
-
-  CartModel({
-
+  WishlistModel({
     required this.name,
     required this.price,
     required this.image,
-
-    this.quantity = 1,
+    required this.category,
   });
 }

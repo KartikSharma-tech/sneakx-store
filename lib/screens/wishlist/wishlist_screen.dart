@@ -1,111 +1,196 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/theme/app_text_styles.dart';
 
+import '../../providers/wishlist_provider.dart';
+
+
 class WishlistScreen extends StatelessWidget {
+
   const WishlistScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
 
+    final wishlistProvider =
+        Provider.of<WishlistProvider>(
+      context,
+    );
+
     return Scaffold(
-      backgroundColor: AppColors.background,
+
+      backgroundColor:
+          AppColors.background,
 
       appBar: AppBar(
+
         title: Text(
           "Wishlist",
-          style: AppTextStyles.subHeading,
+          style:
+              AppTextStyles.subHeading,
         ),
       ),
 
-      body: GridView.builder(
-        padding: const EdgeInsets.all(20),
+      body:
+          wishlistProvider
+                  .wishlistItems
+                  .isEmpty
 
-        itemCount: 4,
+              ? Center(
 
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
+                  child: Text(
+                    "No items in wishlist ❤️",
 
-          crossAxisSpacing: 18,
-          mainAxisSpacing: 18,
-
-          childAspectRatio: 0.68,
-        ),
-
-        itemBuilder: (context, index) {
-
-          return Container(
-            decoration: BoxDecoration(
-              color: AppColors.cardColor,
-              borderRadius:
-                  BorderRadius.circular(24),
-            ),
-
-            child: Column(
-              crossAxisAlignment:
-                  CrossAxisAlignment.start,
-
-              children: [
-
-                Expanded(
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          const BorderRadius.vertical(
-                        top: Radius.circular(24),
-                      ),
-
-                      image: const DecorationImage(
-                        image: NetworkImage(
-                          "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
-                        ),
-
-                        fit: BoxFit.cover,
-                      ),
-                    ),
+                    style:
+                        AppTextStyles.body,
                   ),
-                ),
+                )
 
-                Padding(
-                  padding: const EdgeInsets.all(14),
+              : ListView.builder(
 
-                  child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
-
-                    children: [
-
-                      Text(
-                        "Nike Air Max",
-                        style:
-                            AppTextStyles.subHeading
-                                .copyWith(
-                          fontSize: 16,
-                        ),
-                      ),
-
-                      const SizedBox(height: 8),
-
-                      Text(
-                        "\$240",
-                        style:
-                            AppTextStyles.body
-                                .copyWith(
-                          color: AppColors.primary,
-                          fontWeight:
-                              FontWeight.bold,
-                        ),
-                      ),
-                    ],
+                  padding:
+                      const EdgeInsets.all(
+                    20,
                   ),
+
+                  itemCount:
+                      wishlistProvider
+                          .wishlistItems
+                          .length,
+
+                  itemBuilder:
+                      (context, index) {
+
+                    final item =
+                        wishlistProvider
+                            .wishlistItems[
+                                index];
+
+                    return Container(
+
+                      margin:
+                          const EdgeInsets.only(
+                        bottom: 18,
+                      ),
+
+                      padding:
+                          const EdgeInsets.all(
+                        14,
+                      ),
+
+                      decoration:
+                          BoxDecoration(
+
+                        color:
+                            AppColors.cardColor,
+
+                        borderRadius:
+                            BorderRadius.circular(
+                          22,
+                        ),
+                      ),
+
+                      child: Row(
+
+                        children: [
+
+                          ClipRRect(
+
+                            borderRadius:
+                                BorderRadius.circular(
+                              16,
+                            ),
+
+                            child: Image.network(
+
+                              item.image,
+
+                              width: 80,
+                              height: 80,
+
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+
+                          const SizedBox(
+                            width: 14,
+                          ),
+
+                          Expanded(
+
+                            child: Column(
+
+                              crossAxisAlignment:
+                                  CrossAxisAlignment
+                                      .start,
+
+                              children: [
+
+                                Text(
+
+                                  item.name,
+
+                                  maxLines: 1,
+
+                                  overflow:
+                                      TextOverflow
+                                          .ellipsis,
+
+                                  style:
+                                      AppTextStyles
+                                          .subHeading
+                                          .copyWith(
+                                    fontSize: 17,
+                                  ),
+                                ),
+
+                                const SizedBox(
+                                  height: 10,
+                                ),
+
+                                Text(
+
+                                  item.price,
+
+                                  style:
+                                      AppTextStyles
+                                          .body
+                                          .copyWith(
+                                    color:
+                                        AppColors
+                                            .primary,
+
+                                    fontWeight:
+                                        FontWeight
+                                            .bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          IconButton(
+
+                            onPressed: () {
+
+                              wishlistProvider
+                                  .toggleWishlist(
+                                item,
+                              );
+                            },
+
+                            icon: const Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
-              ],
-            ),
-          );
-        },
-      ),
     );
   }
 }
