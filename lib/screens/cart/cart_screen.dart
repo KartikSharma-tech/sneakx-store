@@ -89,20 +89,20 @@ class CartScreen extends StatelessWidget {
 
                               Row(
                                 children: [
-                                  Container(
-                                    padding: const EdgeInsets.all(6),
+                                  // Container(
+                                  //   padding: const EdgeInsets.all(6),
 
-                                    decoration: BoxDecoration(
-                                      color: Colors.black26,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
+                                  //   decoration: BoxDecoration(
+                                  //     color: Colors.black26,
+                                  //     borderRadius: BorderRadius.circular(10),
+                                  //   ),
 
-                                    child: const Icon(
-                                      Icons.remove,
-                                      color: Colors.white,
-                                      size: 18,
-                                    ),
-                                  ),
+                                  //   child: const Icon(
+                                  //     Icons.remove,
+                                  //     color: Colors.white,
+                                  //     size: 18,
+                                  //   ),
+                                  // ),
 
                                   GestureDetector(
                                     onTap: () {

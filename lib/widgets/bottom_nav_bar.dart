@@ -4,6 +4,7 @@ import '../screens/cart/cart_screen.dart';
 import '../screens/wishlist/wishlist_screen.dart';
 import '../core/constants/app_colors.dart';
 import '../screens/home/home_screen.dart';
+import '../screens/orders/order_history_screen.dart';
 import '../screens/profile/profile_screen.dart';
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({super.key});
@@ -21,7 +22,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   const WishlistScreen(),
   const CartScreen(),
   // const Center(child: Text("Orders")),
-  const CartScreen(),
+  const OrderHistoryScreen(),
   // const Center(child: Text("Profile")),
   const ProfileScreen(),
 ];

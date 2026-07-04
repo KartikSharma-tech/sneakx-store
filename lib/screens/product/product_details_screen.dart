@@ -210,20 +210,48 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     // BUTTONS
                     Row(
                       children: [
-                        Container(
-                          width: 60,
-                          height: 60,
+                        GestureDetector(
 
-                          decoration: BoxDecoration(
-                            color: AppColors.cardColor,
-                            borderRadius: BorderRadius.circular(18),
-                          ),
+  onTap: () {
 
-                          child: const Icon(
-                            Iconsax.shopping_cart,
-                            color: Colors.white,
-                          ),
-                        ),
+    Provider.of<CartProvider>(
+      context,
+      listen: false,
+    ).addToCart(
+
+      CartModel(
+
+        name: "Nike Air Max 270",
+
+        image:
+            "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+
+        price: "\$240",
+      ),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Added to cart"),
+      ),
+    );
+  },
+
+  child: Container(
+    width: 60,
+    height: 60,
+
+    decoration: BoxDecoration(
+      color: AppColors.cardColor,
+      borderRadius: BorderRadius.circular(18),
+    ),
+
+    child: const Icon(
+      Iconsax.shopping_cart,
+      color: Colors.white,
+    ),
+  ),
+),
 
                         const SizedBox(width: 16),
 
