@@ -147,8 +147,8 @@ class OrderHistoryScreen extends StatelessWidget {
                               decoration: BoxDecoration(
 
                                 color:
-                                    Colors.green.withOpacity(
-                                  0.15,
+                                    Colors.green.withValues(
+                                  alpha: 0.15,
                                 ),
 
                                 borderRadius:

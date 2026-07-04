@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:provider/provider.dart';
-
+import '../orders/checkout_screen.dart';
 import '../../models/cart_model.dart';
 import '../../providers/cart_provider.dart';
 import '../../core/constants/app_colors.dart';
@@ -240,27 +240,30 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 ),
                               ),
 
-                              onPressed: () {
-                                Provider.of<CartProvider>(
-                                  context,
-                                  listen: false,
-                                ).addToCart(
-                                  CartModel(
-                                    name: "Nike Air Max 270",
+                             onPressed: () {
 
-                                    image:
-                                        "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
+  Provider.of<CartProvider>(
+    context,
+    listen: false,
+  ).addToCart(
+    CartModel(
+      name: "Nike Air Max 270",
 
-                                    price: "\$240",
-                                  ),
-                                );
+      image:
+          "https://images.unsplash.com/photo-1542291026-7eec264c27ff",
 
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Added to cart"),
-                                  ),
-                                );
-                              },
+      price: "\$240",
+    ),
+  );
+
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) =>
+          const CheckoutScreen(),
+    ),
+  );
+},
 
                               child: Text(
                                 "Buy Now",

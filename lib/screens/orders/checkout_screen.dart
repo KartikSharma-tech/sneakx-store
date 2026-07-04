@@ -200,24 +200,27 @@ final orderProvider =
       listen: false,
     ).addOrder(
 
-      OrderModel(
+     OrderModel(
 
-        orderId:
-            DateTime.now()
-                .millisecondsSinceEpoch
-                .toString(),
+  orderId:
+      DateTime.now()
+          .millisecondsSinceEpoch
+          .toString(),
 
-        productName: item.name,
+  productName:
+      item.name.toString(),
 
-        productImage: item.image,
+  productImage:
+      item.image.toString(),
 
-        price: item.price,
+  price:
+      item.price.toString(),
 
-        date:
-            "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
+  date:
+      "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
 
-        status: "Delivered",
-      ),
+  status: "Delivered",
+),
     );
   }
 

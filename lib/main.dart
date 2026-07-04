@@ -4,7 +4,6 @@ import 'providers/cart_provider.dart';
 import 'providers/wishlist_provider.dart';
 import 'providers/order_provider.dart';
 import 'core/theme/app_theme.dart';
-import 'screens/onboarding/onboarding_screen.dart';
 // import 'screens/splash/splash_screen.dart';
 // import 'screens/auth/login_screen.dart';
 import 'widgets/bottom_nav_bar.dart';
