@@ -12,39 +12,22 @@ class CheckoutScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-final cartProvider =
-    Provider.of<CartProvider>(
-  context,
-);
-final orderProvider =
-    Provider.of<OrderProvider>(
-  context,
-  listen: false,
-);
+    final cartProvider = Provider.of<CartProvider>(context);
+    final orderProvider = Provider.of<OrderProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: AppColors.background,
 
-      appBar: AppBar(
-        title: Text(
-          "Checkout",
-          style: AppTextStyles.subHeading,
-        ),
-      ),
+      appBar: AppBar(title: Text("Checkout", style: AppTextStyles.subHeading)),
 
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
 
         child: Column(
-          crossAxisAlignment:
-              CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
 
           children: [
-
             // ADDRESS
-            Text(
-              "Delivery Address",
-              style: AppTextStyles.subHeading,
-            ),
+            Text("Delivery Address", style: AppTextStyles.subHeading),
 
             const SizedBox(height: 16),
 
@@ -53,31 +36,21 @@ final orderProvider =
 
               decoration: BoxDecoration(
                 color: AppColors.cardColor,
-                borderRadius:
-                    BorderRadius.circular(22),
+                borderRadius: BorderRadius.circular(22),
               ),
 
               child: Column(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
 
                 children: [
-
                   Text(
                     "Kartik Sharma",
-                    style:
-                        AppTextStyles.subHeading
-                            .copyWith(
-                      fontSize: 18,
-                    ),
+                    style: AppTextStyles.subHeading.copyWith(fontSize: 18),
                   ),
 
                   const SizedBox(height: 10),
 
-                  Text(
-                    "Ajmer, Rajasthan\nIndia",
-                    style: AppTextStyles.body,
-                  ),
+                  Text("Ajmer, Rajasthan\nIndia", style: AppTextStyles.body),
                 ],
               ),
             ),
@@ -85,10 +58,7 @@ final orderProvider =
             const SizedBox(height: 30),
 
             // PAYMENT
-            Text(
-              "Payment Method",
-              style: AppTextStyles.subHeading,
-            ),
+            Text("Payment Method", style: AppTextStyles.subHeading),
 
             const SizedBox(height: 16),
 
@@ -97,24 +67,16 @@ final orderProvider =
 
               decoration: BoxDecoration(
                 color: AppColors.cardColor,
-                borderRadius:
-                    BorderRadius.circular(22),
+                borderRadius: BorderRadius.circular(22),
               ),
 
               child: Row(
                 children: [
-
-                  const Icon(
-                    Icons.credit_card,
-                    color: Colors.white,
-                  ),
+                  const Icon(Icons.credit_card, color: Colors.white),
 
                   const SizedBox(width: 14),
 
-                  Text(
-                    "Visa **** 4587",
-                    style: AppTextStyles.body,
-                  ),
+                  Text("Visa **** 4587", style: AppTextStyles.body),
                 ],
               ),
             ),
@@ -122,10 +84,7 @@ final orderProvider =
             const SizedBox(height: 30),
 
             // ORDER SUMMARY
-            Text(
-              "Order Summary",
-              style: AppTextStyles.subHeading,
-            ),
+            Text("Order Summary", style: AppTextStyles.subHeading),
 
             const SizedBox(height: 16),
 
@@ -134,20 +93,11 @@ final orderProvider =
               "\$${cartProvider.totalPrice.toStringAsFixed(0)}",
             ),
 
-            buildSummaryRow(
-              "Delivery",
-              "\$20",
-            ),
+            buildSummaryRow("Delivery", "\$20"),
 
-            buildSummaryRow(
-              "Discount",
-              "-\$10",
-            ),
+            buildSummaryRow("Discount", "-\$10"),
 
-            const Divider(
-              color: Colors.white24,
-              height: 40,
-            ),
+            const Divider(color: Colors.white24, height: 40),
 
             buildSummaryRow(
               "Total",
@@ -162,85 +112,54 @@ final orderProvider =
               height: 58,
 
               child: ElevatedButton(
-                style:
-                    ElevatedButton.styleFrom(
-                  backgroundColor:
-                      AppColors.primary,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primary,
 
-                  shape:
-                      RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(
-                      18,
-                    ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
                   ),
                 ),
 
                 onPressed: () {
+                  if (cartProvider.cartItems.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Your cart is empty")),
+                    );
 
-  if (cartProvider.cartItems.isEmpty) {
+                    return;
+                  }
 
-    ScaffoldMessenger.of(context)
-        .showSnackBar(
+                  for (var item in cartProvider.cartItems) {
+                 orderProvider.addOrder(
+                      OrderModel(
+                        orderId: DateTime.now().millisecondsSinceEpoch
+                            .toString(),
 
-      const SnackBar(
-        content: Text(
-          "Your cart is empty",
-        ),
-      ),
-    );
+                        productName: item.name.toString(),
 
-    return;
-  }
+                        productImage: item.image.toString(),
 
-  for (var item in cartProvider.cartItems) {
+                        price: item.price.toString(),
 
-    Provider.of<OrderProvider>(
-      context,
-      listen: false,
-    ).addOrder(
+                        date:
+                            "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
 
-     OrderModel(
+                        status: "Delivered",
+                      ),
+                    );
+                  }
 
-  orderId:
-      DateTime.now()
-          .millisecondsSinceEpoch
-          .toString(),
+                  cartProvider.clearCart();
 
-  productName:
-      item.name.toString(),
+                  Navigator.push(
+                    context,
 
-  productImage:
-      item.image.toString(),
-
-  price:
-      item.price.toString(),
-
-  date:
-      "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
-
-  status: "Delivered",
-),
-    );
-  }
-
-  cartProvider.clearCart();
-
-  Navigator.push(
-
-    context,
-
-    MaterialPageRoute(
-      builder: (context) =>
-          const OrderSuccessScreen(),
-    ),
-  );
-},
-                child: Text(
-                  "Place Order",
-                  style:
-                      AppTextStyles.button,
-                ),
+                    MaterialPageRoute(
+                      builder: (context) => const OrderSuccessScreen(),
+                    ),
+                  );
+                },
+                child: Text("Place Order", style: AppTextStyles.button),
               ),
             ),
           ],
@@ -249,39 +168,24 @@ final orderProvider =
     );
   }
 
-  Widget buildSummaryRow(
-    String title,
-    String value, {
-    bool isTotal = false,
-  }) {
-
+  Widget buildSummaryRow(String title, String value, {bool isTotal = false}) {
     return Padding(
-      padding: const EdgeInsets.only(
-        bottom: 18,
-      ),
+      padding: const EdgeInsets.only(bottom: 18),
 
       child: Row(
-        mainAxisAlignment:
-            MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
         children: [
-
           Text(
             title,
 
-            style:
-                isTotal
-                    ? AppTextStyles.subHeading
-                    : AppTextStyles.body,
+            style: isTotal ? AppTextStyles.subHeading : AppTextStyles.body,
           ),
 
           Text(
             value,
 
-            style:
-                isTotal
-                    ? AppTextStyles.subHeading
-                    : AppTextStyles.body,
+            style: isTotal ? AppTextStyles.subHeading : AppTextStyles.body,
           ),
         ],
       ),
