@@ -145,6 +145,7 @@ class CheckoutScreen extends StatelessWidget {
                             "${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}",
 
                         status: "Delivered",
+                        quantity: item.quantity,
                       ),
                     );
                   }

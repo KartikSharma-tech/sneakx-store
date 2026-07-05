@@ -103,7 +103,6 @@ class CartScreen extends StatelessWidget {
                                   //     size: 18,
                                   //   ),
                                   // ),
-
                                   GestureDetector(
                                     onTap: () {
                                       Provider.of<CartProvider>(
@@ -183,7 +182,16 @@ class CartScreen extends StatelessWidget {
                           ),
                         ),
 
-                        const Icon(Iconsax.trash, color: Colors.red),
+                        GestureDetector(
+                          onTap: () {
+                            Provider.of<CartProvider>(
+                              context,
+                              listen: false,
+                            ).removeItem(cartItem);
+                          },
+
+                          child: const Icon(Iconsax.trash, color: Colors.red),
+                        ),
                       ],
                     ),
                   );

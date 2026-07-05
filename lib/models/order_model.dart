@@ -6,6 +6,7 @@ class OrderModel {
   final String price;
   final String date;
   final String status;
+  final int quantity;
 
   OrderModel({
 
@@ -15,5 +16,6 @@ class OrderModel {
     required this.price,
     required this.date,
     required this.status,
+    required this.quantity,
   });
 }

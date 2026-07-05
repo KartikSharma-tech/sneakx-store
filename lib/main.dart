@@ -4,17 +4,37 @@ import 'providers/cart_provider.dart';
 import 'providers/wishlist_provider.dart';
 import 'providers/order_provider.dart';
 import 'core/theme/app_theme.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'models/hive/wishlist_hive_model.dart';
+import 'models/hive/cart_hive_model.dart';
+import 'models/hive/order_hive_model.dart';
 // import 'screens/splash/splash_screen.dart';
 // import 'screens/auth/login_screen.dart';
 import 'widgets/bottom_nav_bar.dart';
-void main() {
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(CartHiveModelAdapter());
+
+  Hive.registerAdapter(WishlistHiveModelAdapter());
+
+  Hive.registerAdapter(OrderHiveModelAdapter());
+
+  await Hive.openBox<CartHiveModel>("cartBox");
+
+  await Hive.openBox<WishlistHiveModel>("wishlistBox");
+
+  await Hive.openBox<OrderHiveModel>("orderBox");
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => CartProvider()),
 
         ChangeNotifierProvider(create: (_) => WishlistProvider()),
-      
+
         ChangeNotifierProvider(create: (_) => OrderProvider()),
       ],
 
@@ -34,9 +54,9 @@ class SneakXApp extends StatelessWidget {
       theme: AppTheme.darkTheme,
 
       home: const BottomNavBar(),
+
       //  " baad me remove krna h to show login screen also remove import of bottom nav bar and uncomment login screen import and home: const LoginScreen(),"
       // home: const OnboardingScreen(),
-
     );
   }
 }
