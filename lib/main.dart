@@ -12,6 +12,23 @@ import 'models/hive/order_hive_model.dart';
 // import 'screens/auth/login_screen.dart';
 import 'widgets/bottom_nav_bar.dart';
 
+
+
+// 
+
+import 'models/hive/order_hive_model.dart';
+import 'models/hive/order_hive_model.dart';
+import 'm  Hive.registerAdapter(CartHiveModelAdapter());
+odels/hive/order_hive_model.dart';
+import 'models/hive/order_hive_model.dart';
+override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+
+      theme: AppTheme.darkTheme,
+
+// 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
